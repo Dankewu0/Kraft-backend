@@ -3,63 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use Illuminate\Http\Request;
-
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\TaskRequest;
+use App\Http\Services\TaskService;
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(protected TaskService $service) {}
+    public function index(): JsonResponse
     {
-        //
+        // функция получения тасков
+        return response()->json($this->service->getPaginatedTasks());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(TaskRequest $request): JsonResponse
     {
-        //
+        // функция создания таска
+        $product = $this->service->createTask($request->validated());
+        return response()->json($product, 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show(Task $task) {}
+
+    public function update(TaskRequest $request, Task $task): JsonResponse
     {
-        //
+        // функция обновление таска
+        $updatedTask = $this->service->updateTask($task, $request->validated());
+        return response()->json($updatedTask);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Task $task)
+    public function destroy(Task $task): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Task $task)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Task $task)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Task $task)
-    {
-        //
+        // функция удаления таска
+        $this->service->deleteTask($task);
+        return response()->json(null, 204);
     }
 }
