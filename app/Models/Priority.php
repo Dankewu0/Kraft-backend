@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Task;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Priority extends Model
 {
-    protected $fillable = ["name"];
+    protected $fillable = ['name'];
 
-    public function tasks()
+    public function tasks(): HasMany
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Tasks::class);
     }
 }

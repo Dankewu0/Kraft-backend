@@ -1,11 +1,15 @@
 <?php
+
 namespace App\Http\Services;
+
 use App\Models\Priority;
+use Illuminate\Database\Eloquent\Collection;
+
 class PriorityService
 {
-    public function getAllPriorities(): array
+    public function getAllPriorities(): Collection
     {
-        return Priority::all()->toArray();
+        return Priority::all();
     }
 
     public function createPriority(array $data): Priority
@@ -16,6 +20,7 @@ class PriorityService
     public function updatePriority(Priority $priority, array $data): Priority
     {
         $priority->update($data);
+
         return $priority;
     }
 
